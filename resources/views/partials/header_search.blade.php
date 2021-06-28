@@ -4,18 +4,12 @@
 	<div class="container">
 		<nav class="navbar justify-content-between">
 			<a id="logo-link" class="navbar-brand" href="{{ url('/') }}">
-				<img id="logo" src="{{ asset('img/logo-white.png') }}" alt="Sound Art logo">
+				<img id="logo" src="{{ asset('img/logo_small.png') }}" alt="Sound Art logo">
 			</a>
 			<ul class="navbar-nav">
 				<li class="nav-item">
 					<a class="nav-link" href="{{ route('search') }}">Explore</a>
 				</li>
-				@guest
-				@else
-				<li class="nav-item">
-					<a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
-				</li>
-				@endguest
 			</ul>
 			<ul class="navbar-nav ml-auto"> 
 			<!-- Authentication Links -->
@@ -29,6 +23,9 @@
 					</li>
 				@endif
 			@else
+				<li class="nav-item">
+					<a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
+				</li>
 				<li class="nav-item dropdown">
 					<a id="navbarDropdown btn btn-outline-light" class="nav-link dropdown-toggle" :class="{change_color_btn: scrollPosition > scrollChange}" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 						{{ Auth::user()->name }}

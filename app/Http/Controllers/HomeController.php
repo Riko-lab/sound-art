@@ -25,19 +25,30 @@ class HomeController extends Controller
     public function index()
     {
 		$data = [
-			'users' 		=> User::all(),
-			'profiles' 		=> Profile::all(),
 			'categories' 	=> Category::all(),
 			'genres' 		=> Genre::all(),
 			'offers' 		=> Offer::all(),
-			'messages' 		=> Message::all(),
-			'reviews' 		=> Review::all(),
-			'contracts' 	=> Contract::all(),
-			'sponsorships' 	=> Sponsorship::all(),
  		];
+		
+		 if(!$data['categories'] || !$data['genres'] || !$data['offers']) {
+			abort(404);
+		}
+
         return view('home',$data);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+	
 	/**
 	 * #################################
 	 * #         CODE TEST PAGE        #
@@ -105,6 +116,48 @@ class HomeController extends Controller
 			'sponsorships' 	=> Sponsorship::all(),
  		];
         return view('test.test3',$data); 
+    }
+
+	/**
+	 * #################################
+	 * #       CODE TEST PAGE 4        #
+	 * #################################
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function test4()
+    {
+		$slug = 'patty-de-gregori';
+
+		$data = [
+			// main info: passed profile
+			'profile' 		=> Profile::where('slug',$slug)->first(),
+			// aux infos: db tables
+			'users' 		=> User::all(),
+			'profiles'		=> Profile::all(),
+			'categories'	=> Category::all(),
+			'genres' 		=> Genre::all(),
+			'offers' 		=> Offer::all(),
+			'messages' 		=> Message::all(),
+			'reviews' 		=> Review::all(),
+ 		];
+
+		if(!$data['profile']) {
+			abort(404);
+		}
+        return view('test.test4',$data); 
+    }
+
+	/**
+	 * #################################
+	 * #        MODAL TEMPLATE         #
+	 * #################################
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function modal()
+    {
+        return view('test.modal_template'); 
     }
 
 }

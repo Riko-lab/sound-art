@@ -1,3 +1,107 @@
+@extends('layouts.dashboard')
+
+@section('title','Your Sponsorship')
+
+{{----------------------------------------------------------- 
+	AGGIUNTO IN layouts/dashboard.blade.php
+
+	>>> TEMPORANEO: PORTARE POI IN SASS QUESTO STILE <<<
+	<!-- Styles: single page addendum -->
+	@stack('dashboard_head')
+-----------------------------------------------------------}}
+@push('dashboard_head')
+<style>
+	.vertical_spacer {
+		margin-bottom: 24px;
+	}
+	.highlight_text {
+    	font-size: 1.2em;
+    	font-weight: 800;
+		color: gray;
+	}
+	.txt_1 {
+    	font-size: 1em;
+	}
+</style>
+@endpush
+
+@section('content')
+
+@php
+
+	use App\Classes\DateDisplay;
+	use App\Classes\IsNowInInterval;
+
+	$my_user		= Auth::user();
+	$my_profile		= $my_user->profile;
+	$my_contracts	= $my_user->contracts;
+	$is_active_sponsorship = false;
+	foreach ($my_contracts as $my_contract) {
+		if ((new IsNowInInterval)->get($my_contract->date_start,$my_contract->date_end)) {
+			$is_active_sponsorship = true;
+		}
+	}
+
+@endphp
+
+<div class="container">
+	<div class="row justify-content-center">
+    	<div class="col-12 col-md-10 col-lg-8 col-xl-7">
+
+			<div class="d-flex">
+				<h2 class="mr-auto p-2">Your Sponsorships</h2>
+				@if (!$is_active_sponsorship && $my_profile)
+					<div class="p-2">
+						<a class="btn btn-success btn-block" href="{{ route('admin.sponsorships.index') }}">Sponsor your Profile</a>
+					</div>
+				@endif
+			</div>
+
+			@foreach ($my_contracts->sortByDesc('date_start') as $contract)
+
+				<div class="msg_box">
+					<div class="content">
+
+						<div class="highlight_text">{{ucwords($contract->sponsorship->name)}}</div>
+						<div>Contract id: {{$contract->id}} - Duration: {{$contract->sponsorship->hour_duration}} hours</div>
+
+						<p>
+							<table>
+								<tr><td>Start</td><td>: {{ (new DateDisplay)->get($contract->date_start) }}</td></tr>
+								<tr><td>End  </td><td>: {{ (new DateDisplay)->get($contract->date_end)   }}</td></tr>
+							</table>
+						</p>
+					
+						<div>Transactions status: 
+							@if ($contract->transaction_status == 'submitted_for_settlement')
+								<span class="badge badge-success">Payed</span>
+							@else
+								<span class="badge badge-warning">Issues occurred</span>
+							@endif				
+						</div>
+
+						@if ((new IsNowInInterval)->get($contract->date_start,$contract->date_end))
+							<span class="msg_delete badge badge-success txt_1">Currently active</span>
+						@else 
+							<span class="msg_delete badge badge-secondary txt_1">Expired</span>
+						@endif
+
+					</div>
+				</div>
+
+			@endforeach
+
+        </div>
+	</div>
+</div>
+
+
+@endsection
+
+
+
+
+
 {{-- <h2>MODEL: Contract, CRUD: index, AREA: admin - DETTAGLIO SINGOLO CONTRATTO MIO</h2>
 <h5>URL</h5>
 <p>url: http://localhost:8000/admin/sponsorship/list (get)</p>
@@ -14,68 +118,3 @@
 @dd('') --}}
 
 
-@extends('layouts.dashboard')
-@section('title','My Sponsorship')
-@section('content')
-
-
-{{-- dati user autenticato --}}
-@php
-	date_default_timezone_set('Europe/Rome');
-
-	$my_user		= Auth::user();
-	$my_profile		= $my_user->profile;
-	$my_contracts	= $my_user->contracts;
-	$is_active_sponsorship = false;
-	$my_sponsorship_id = null;
-	foreach ($my_contracts as $my_contract) {
-		$date_start = DateTime::createFromFormat('Y-m-d H:i:s', $my_contract->date_start);
-		$date_end   = DateTime::createFromFormat('Y-m-d H:i:s', $my_contract->date_end);
-		$now 		= new DateTime();
-		if ($date_start < $now && $date_end >= $now) {
-			$is_active_sponsorship = true;
-			$my_contract_id = $my_contract->id;
-		}
-	}
-@endphp
-
-<h2>Your Sponsorships</h2>
-
-@php
-	$counter = 1;
-@endphp
-
-@foreach ($my_contracts->sortByDesc('created_at') as $contract)
-
-	<div class="msg_box">
-		<div class="content">
-			<p>{{$counter}} (id: {{$contract->id}}) - {{$contract->sponsorship->name}} (duration: {{$contract->sponsorship->hour_duration}} hours)</p>
-			<p>start: {{$contract->date_start}} - end: {{$contract->date_end}}</p>
-		
-			@php
-				$date_start = DateTime::createFromFormat('Y-m-d H:i:s', $contract->date_start);
-				$date_end   = DateTime::createFromFormat('Y-m-d H:i:s', $contract->date_end);
-				$now 		= new DateTime();
-			@endphp
-		
-			@if ($contract->transaction_status == 'submitted_for_settlement')
-				<p>Payed</p>
-			@else
-				<p>Issues occurred</p>
-			@endif
-		
-			@if ($date_start < $now && $date_end >= $now)
-				<p>Currently active</p>
-			@else 
-				<p>Expired</p>
-			@endif
-
-		</div>
-
-	</div>
-
-@endforeach
-
-
-
-@endsection

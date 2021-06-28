@@ -26,13 +26,13 @@
                         <div class="categories-cnt">
                             <h5>Categories</h5>
                             <ul>
-                                @foreach($categories as $category)
+                                @foreach($categories->sortBy('name') as $category)
                                 <li>
                                     <form action="{{ route('search') }}" method="post">
                                         @csrf
                                         @method('POST')
                                         <input type="hidden" id="category" name="category" value="{{$category->name}}">
-                                        <input v-on:click="stopProp" type="submit" role="button" value="{{$category->name}}">
+                                        <input v-on:click="stopProp" type="submit" role="button" value="{{ucwords($category->name)}}">
                                     </form>
                                 </li>
                                 @endforeach
@@ -41,13 +41,13 @@
                         <div class="genres-cnt">
                             <h5>Genres</h5>
                             <ul>
-                                @foreach($genres as $genre)
+                                @foreach($genres->sortBy('name') as $genre)
                                 <li>
                                     <form action="{{ route('search') }}" method="post">
                                         @csrf
                                         @method('POST')
                                         <input type="hidden" id="genre" name="genre" value="{{$genre->name}}">
-                                        <input v-on:click="stopProp" type="submit" value="{{$genre->name}}">
+                                        <input v-on:click="stopProp" type="submit" value="{{ucwords($genre->name)}}">
                                     </form>
                                 </li>
                                 @endforeach
@@ -102,10 +102,15 @@
             <p>Now you can, through SoundArt</p>
         </div>
     </section>
-    <section class="artist-in-evidence">
-        <h1>In Evidence</h1>
+
+    @include('partials.cards_home')
+
+    <!-- Get started -->
+    <section class="get-started">
+        <h3>Discover Artists</h3>
+        <a href="{{ route('search') }}" class="btn btn-outline-dark btn-lg">Search for artists</a>
     </section>
-    @include('partials.cards')
+    
     <section class="how-it-works">
         <div class="container-fluid">
             <div class="row">
