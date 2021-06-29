@@ -38,6 +38,7 @@ const app = new Vue({
 		showCategoryPannel : false,
 		showGenrePannel : false,
 		showVotePannel : false,
+		showAuthPannel : false,
 		humburger : false,
 
 		/*BUTTONS IN PAGINA SEARCH*/
@@ -60,6 +61,7 @@ const app = new Vue({
 		groupLen : 24,
 		more : false,
 		showCards : false,
+		resultsNotFound : false,
 		
 		// API FILTERS
 		category_selected	: null,
@@ -97,6 +99,9 @@ const app = new Vue({
 			this.showCategoryPannel = false;
 			this.showGenrePannel = false;
 		},
+		showAuth: function() {
+			this.showAuthPannel = !this.showAuthPannel;
+		},
 		setCategory: function (category) {
 			if(category === 'No filter') {
 				this.category_selected = null;
@@ -130,7 +135,31 @@ const app = new Vue({
 		stopProp: function(e) {
 			e.stopPropagation();
 		},
+		wantToWork : function() {
+			let wantToWork = [
+				"BTS's songwriter ?", 
+				"The Killers’ Mixing Engineer ?",
+				"Beyonce’s Songwriter ?",
+				"Jamiroquai’s Guitarist ?",
+				"Joe Cocker’s Bass Player ?",
+				"Morrissey’s Guitarist ?"
+			]
+			let startActive = 1;
+			let activePhrase = document.getElementById('active-phrase');
+			setInterval(function() {
+				activePhrase.style.opacity = '0';
+				setTimeout(function() {
+					if(startActive == wantToWork.length) {
+						startActive = 0;
+					}
+					activePhrase.innerHTML = wantToWork[startActive];
+					activePhrase.style.opacity = '1';
+					startActive++;
+				}, 500);
+			}, 3000);	
+		},
 		btnSubmit() {
+			this.resultsNotFound = false;
 			this.showCategoryPannel = false;
 			this.showGenrePannel = false;
 			this.showVotePannel = false;
@@ -206,11 +235,11 @@ const app = new Vue({
 										if(currentArray[i].hasOwnProperty('categories')) {
 											let categoriesLength = currentArray[i]['categories'].length;
 											for (let y = 0; y < categoriesLength; y++) {
-												if (y > 2) break;
+												if (y > 3) break;
 												else {
 													let titleTextCnt = document.createElement('span');
-													if(y < categoriesLength - 1) {
-														titleTextCnt.innerHTML = '<span>' + currentArray[i]['categories'][y].toUpperCase() + '<span>' + '/' + '</span>' + '</span>';  
+													if(y < categoriesLength - 1 && y < 3) {
+														titleTextCnt.innerHTML = '<span>' + currentArray[i]['categories'][y].toUpperCase() + '<span>' + ' /&nbsp' + '</span>' + '</span>';  
 													}
 													else {
 														titleTextCnt.innerHTML = '<span>' + currentArray[i]['categories'][y].toUpperCase() + '</span>';
@@ -287,8 +316,8 @@ const app = new Vue({
 								for (let z = 0; z < genresLength; z++) {
 									if(z > 4) break;
 									let genresText = document.createElement('span');
-									if(z < genresLength - 1) {
-										genresText.innerHTML = currentArray[i]['genres'][z].toUpperCase() + '/';
+									if(z < (genresLength - 1) && (z < 4)) {
+										genresText.innerHTML = currentArray[i]['genres'][z].toUpperCase() + ' /&nbsp';
 									}
 									else {
 										genresText.innerHTML = currentArray[i]['genres'][z].toUpperCase();
@@ -328,6 +357,10 @@ const app = new Vue({
 				this.displayProfiles.push(this.iper_profiles);
 				if(this.displayProfiles[0].length > 0) {
 					this.showCards = true;
+				}
+				else {
+					this.resultsNotFound = true;
+					this.showCards = false;
 				}
 				if(this.more) {
 					this.buildHTML();
@@ -376,24 +409,15 @@ const app = new Vue({
 			});
 			return;
 		},
-		scrollSearch() {
-			let x = document.querySelector('.header-search');
-			let z = document.querySelector('.jumbotron-container-search');
-			let y = document.querySelector('[class^=search-bar]');
-				window.addEventListener('scroll', function() {
-				if(window.scrollY > (x.offsetHeight + z.offsetHeight)) {
-					y.classList.remove('search-bar-white');
-					y.classList.add('search-bar-blue');
-				}
-				else {
-					y.classList.remove('search-bar-blue');
-					y.classList.add('search-bar-white');
-				}
+		addEventClickListenerAuth() {
+			document.addEventListener('click', () => {
+				this.showAuthPannel = false;
 			});
-			
 		}
 	},
 	mounted() {
+		this.resultsNotFound = false;
+		this.addEventClickListenerAuth();
 		var ulr_path = window.location.pathname;
 		if (ulr_path == '/') {
 			this.onlySponsorship = true,
@@ -401,13 +425,13 @@ const app = new Vue({
 			this.searchDefault();
 			this.addEventClickListener();
 			this.base_url = 'profiles/search/';
+			this.wantToWork();
 		}	
 		if (ulr_path == '/profiles/search') {
 			this.onlySponsorship = false,
 			this.showCards = false,
 			this.searchDefault();
 			this.addEventClickListener();
-			this.scrollSearch();
 			this.base_url = 'search/';
 		}
 	},

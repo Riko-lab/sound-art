@@ -1,5 +1,6 @@
 {{-- CARDS --}}
 <section v-if="showCards" class="card-list">
+  <h3>In evidence</h3>
   <div class="container">
     <div id="myrow" class="row">
       <div v-for="(card, index) in displayProfiles[0]" :key="card.id" class="col-lg-3 col-md-4 col-sm-6">
@@ -17,8 +18,8 @@
             <div class="provided-card-title">
               <a class="provided-categories" v-bind:href="base_url + card.slug">
                 <h3>
-                  <span  v-for="category, index in card.categories" :key="category.id" v-if="index < 3">@{{category.toUpperCase()}}
-                    <span v-if="index < (card.categories.length - 1)">/</span>
+                  <span  v-for="category, index in card.categories" :key="category.id" v-if="index < 4">@{{category.toUpperCase()}}
+                    <span v-if="index < (card.categories.length - 1) && index < 3">/&nbsp</span>
                   </span>          
                 </h3>
               </a>
@@ -52,7 +53,7 @@
               <h6>Genres</h6>
               <span v-for="genre, index in card.genres" :key="genre.id" v-if="index < 5">
                   @{{genre.toUpperCase()}}
-                  <span v-if="index < card.genres.length - 1">/</span>
+                  <span v-if="index < card.genres.length - 1 && index < 4">/</span>
               </span>
             </div>
           </div>

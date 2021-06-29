@@ -4,7 +4,7 @@
 	<div class="container">
 		<nav class="navbar justify-content-around col-lg-6 col-md-12">
 			<a id="logo-link" class="navbar-brand" href="{{ url('/') }}">
-				<img id="logo" src="{{ asset('img/logo_small.png') }}" alt="Sound Art logo">
+				<img id="logo" src="{{ asset('img/logo_small.svg') }}" alt="Sound Art logo">
 			</a>
       		<ul class="navbar-nav">
 				<li class="nav-item">
@@ -25,22 +25,22 @@
 			@else
 				<li class="nav-item">
 					<a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
-				</li>	
-				<li class="nav-item dropdown">
-					<a id="navbarDropdown btn btn-outline-light" :class="{change_color_btn: scrollPosition > scrollChange}" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-						{{ Auth::user()->name }}
-					</a>
-	
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="{{ route('logout') }}"
-							onclick="event.preventDefault();
+				</li>
+				<li class="nav-link auth-pannel-dropdown">
+					<button v-on:click.stop="showAuth" class="auth-btn">{{ Auth::user()->name }}</button>
+					<div v-if="showAuthPannel" class="auth-pannel-cnt-blue">
+						<ul class="auth-pannel">
+							<li>
+								<a href="{{ route('logout') }}"
+										onclick="event.preventDefault();
 											document.getElementById('logout-form').submit();">
-							{{ __('Logout') }}
-						</a>
-	
-						<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-							@csrf
-						</form>
+									{{ __('Logout') }}
+								</a>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+									@csrf
+								</form>
+							</li>
+						</ul>
 					</div>
 				</li>
 			@endguest

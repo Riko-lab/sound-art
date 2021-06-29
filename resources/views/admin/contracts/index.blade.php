@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title','Your Sponsorship')
+@section('title','Sponsorships')
 
 {{----------------------------------------------------------- 
 	AGGIUNTO IN layouts/dashboard.blade.php
@@ -50,11 +50,12 @@
 
 			<div class="d-flex">
 				<h2 class="mr-auto p-2">Your Sponsorships</h2>
-				@if (!$is_active_sponsorship && $my_profile)
+				{{-- PULSANTE SPOSTATO IN BASSO --}}
+				{{-- @if (!$is_active_sponsorship && $my_profile)
 					<div class="p-2">
 						<a class="btn btn-success btn-block" href="{{ route('admin.sponsorships.index') }}">Sponsor your Profile</a>
 					</div>
-				@endif
+				@endif --}}
 			</div>
 
 			@foreach ($my_contracts->sortByDesc('date_start') as $contract)
@@ -91,9 +92,19 @@
 
 			@endforeach
 
+			{{-- @if (!$is_active_sponsorship && $my_profile) --}}
+				<div class="p-2">
+					<a class="btn btn-success {{-- btn-block --}} sponsor_bottom" href="{{ route('admin.sponsorships.index') }}">Sponsor your Profile</a>
+				</div>
+			{{-- @endif --}}
+
         </div>
 	</div>
 </div>
+
+{{-- INCLUDE MODAL DELETE PROFILE --}}
+
+@include('partials.modal_profile_delete')
 
 
 @endsection

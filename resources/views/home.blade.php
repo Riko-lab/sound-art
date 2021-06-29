@@ -98,7 +98,7 @@
     <!-- Want to work -->
     <section class="want-to-work">
         <div class="container">
-            <h3>Want to work with <span>BTS's songwriter ?</span></h3>
+            <h3>Want to work with <br><span id="active-phrase">BTS's songwriter ?</span></h3>
             <p>Now you can, through SoundArt</p>
         </div>
     </section>
@@ -107,7 +107,7 @@
 
     <!-- Get started -->
     <section class="get-started">
-        <h3>Discover Artists</h3>
+        <h3>Discover more artists</h3>
         <a href="{{ route('search') }}" class="btn btn-outline-dark btn-lg">Search for artists</a>
     </section>
     

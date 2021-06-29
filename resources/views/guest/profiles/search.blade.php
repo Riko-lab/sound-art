@@ -76,8 +76,8 @@ else {
         <div class="row">
 
           {{-- FILTER --}}
-          <div class="col-lg-1 flex border-right">
-            <button>Filters</button>
+          <div class="col-lg-1 flex filters-btn-border">
+            <span>Filters</span>
           </div>
 
           <div id="filters-cnt" class="col-lg-10 filters-cnt">
@@ -89,7 +89,7 @@ else {
                 <div class="categories-cnt">
                     <ul>
                       <li><input class="btn-no-filter" v-if="btnCategories != 'No filter'" v-on:click="setCategory($event.target.value)" type="button" value="No filter"></li>
-                        @foreach($categories as $category)
+                        @foreach($categories->sortBy('name') as $category)
                         <li>
                             <input v-on:click="setCategory($event.target.value)" type="button" value="{{ucwords($category->name)}}">
                         </li>
@@ -107,7 +107,7 @@ else {
                 <div class="categories-cnt">
                     <ul>
                       <li><input class="btn-no-filter" v-if="btnGeneres != 'No filter'" v-on:click="setGenre($event.target.value)" type="button" value="No filter"></li>
-                        @foreach($genres as $genre)
+                        @foreach($genres->sortBy('name') as $genre)
                         <li>
                             <input v-on:click="setGenre($event.target.value)" type="button" value="{{ucwords($genre->name)}}">
                         </li>
@@ -139,7 +139,7 @@ else {
             <div class="reviews-pannel flex">
               <label for="number-of-views">Reviews:</label>
               <div class="input-cnt">
-                <input id="number-of-views" v-model="reviewNum_selected" type="number" placeholder="number">
+                <input id="number-of-views" v-model="reviewNum_selected" type="number" placeholder="n" min="0" max="999">
               </div>
             </div>
   
@@ -153,6 +153,9 @@ else {
     </section>
 
     @include('partials.cards_search')
+    <section v-if="resultsNotFound" class="no-results">
+      <p>You search did not return any results...</p>
+    </section>
   </main>
 
 @endsection

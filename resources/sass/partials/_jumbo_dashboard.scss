@@ -27,17 +27,11 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                // clip-path: polygon(
-                //     0 calc(100% - 5vw),
-                //     100% 0,
-                //     0 100%,
-                //     100% 100%);
                 .diagonal_container {
                     position: relative;
                     height: 100%;
 
                     .diagonal {
-                        // z-index: 1000;
                         position: absolute;
                         top: 0;
                         left: 0;
@@ -50,17 +44,17 @@
             .title-dash {
                 font-family: Arial, Helvetica, sans-serif;
 
-                padding: 0;
+                padding: 10px 0;
                 h1 {
                     font-size: 4rem;
                     color: $primaryWhite;
-                    line-height: 50px;
+                    line-height: 4rem;
                     font-weight: bolder;
                 }
                 h3 {
                     font-size: 2.8rem;
                     color: $primaryWhite;
-                    line-height: 50px;
+                    line-height: 2.8rem;
                     font-weight: bolder;
                 }
                 .votes {
@@ -90,7 +84,7 @@
 }
 
 // RESPONSIVE
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1200px) {
 .jumbo-dash {
     height: 45vh;
         .row {
@@ -98,15 +92,17 @@
                 .jumbo_img {
                     overflow: hidden !important;
                     .diagonal_container {
-                        right: -20vw;
+                        right: -10vw;
                     }
                 }
                 .title-dash {
                     h1 {
-                        font-size: 2.5rem;
+                        font-size: 2.5em;
+                        line-height: 2.5em;
                     }
                     h3 {
                         font-size: 1.8rem;
+                        line-height: 1.8rem;
                     }
                     p {
                         font-size: 1.4rem;
@@ -122,6 +118,25 @@
 @media screen and (max-width: 540px) {
     .jumbo-dash {
         height: 40vh;
+        .row {
+            .container {
+                .title-dash {
+                    h1 {
+                        font-size: 2em;
+                        line-height: 2em;
+                    }
+                    h3 {
+                        font-size: 1.4rem;
+                        line-height: 1.4rem;
+                    }
+                    p {
+                        font-size: 1rem;
+                    }
+
+                }
+            }
+
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title','Your Reviews')
+@section('title','Reviews')
 
 @section('content')
 
@@ -40,7 +40,7 @@
 								</div>
 								<div class="msg_obj">{{ $review->rev_subject}}</div>
 							@if ($review->rev_text)
-								<div class="msg_txt">{{ $review->rev_text}}</div> 
+								<div class="msg_txt limit">{{ $review->rev_text}}</div> 
 							@endif
 						</div>
 					</div>
@@ -54,6 +54,8 @@
 	</div>
 </div>
 
+{{-- INCLUDE MODAL DELETE PROFILE --}}
+@include('partials.modal_profile_delete')
 
 @endsection
 

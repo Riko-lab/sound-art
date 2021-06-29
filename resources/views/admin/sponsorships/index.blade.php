@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title','Sponsorships')
+@section('title','Sponsorship Shop')
 
 {{----------------------------------------------------------- 
 	AGGIUNTO IN layouts/dashboard.blade.php
@@ -65,6 +65,11 @@
 
 	@endif
 @endforeach
+
+{{-- INCLUDE MODAL DELETE PROFILE --}}
+
+@include('partials.modal_profile_delete')
+
 
 @endsection
 
